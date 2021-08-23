@@ -5,9 +5,7 @@ module Monthvalid
   def monthinput(path, filename, year)
     puts 'Enter the month of your concern.'
     month = gets.chomp
-    maxtemp = []
-    mintemp = []
-    humidity = []
+    maxtemp, mintemp, humidity = Array.new(3) { [] }
     begin
       IO.foreach("#{path}/#{filename}/#{filename}_weather_#{year}_#{month}.txt") do |block|
         if /\A#{year}/.match?(block)
