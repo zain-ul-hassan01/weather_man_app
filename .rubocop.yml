@@ -15,7 +15,7 @@ AllCops:
     - 'bin/**/*'
     
 Metrics/LineLength:
-  Max: 120
+  Max: 135
   
 Metrics/MethodLength:
   Max: 23
@@ -31,3 +31,5 @@ Lint/AmbiguousBlockAssociation:
 
 Style/Documentation:
   Enabled: true
+Metrics/AbcSize:
+  Max: 70

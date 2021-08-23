@@ -2,45 +2,37 @@
 
 require 'colorize'
 require_relative './module_valid'
+require_relative './module_year'
+require_relative './module_month'
 
 # Weatherman Application
 class WeatherMan
   include Validation
   include Yearvalid
   include Monthvalid
-  region = WeatherMan.new.inpvalidation
+  region = WeatherMan.new.inputvalidation
   puts 'Enter the year of your concern.'
   year = gets.chomp
   path = Dir.pwd
   hashyear = {}
-  maxhash = []
-  minhash = []
-  maxhumidity1 = []
+  maxhash, minhash, maxhumidity1, newarr, finarr, maxtemp, mintemp, humidity, arrformax, arrformin, arrforhum = Array.new(11) { [] }
   months = %w[Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec]
-  newarr = []
-  finarr = []
-  maxtemp = []
-  mintemp = []
-  humidity = []
-  arrformax = []
-  arrformin = []
-  arrforhum = []
   # ################ Opening File in directory according to user input####################################
   Dir.foreach(path) do |filename|
     next if ['.', '..'].include?(filename)
 
     if region == filename
-      months.each do |mn|
+      months.each do |month|
         # ############################Opening files Month by month in directory and storing data in array###############
-        newarr = WeatherMan.new.openfile(path, filename, year, mn)
+        newarr = WeatherMan.new.openfile(path, filename, year, month)
         if newarr.length.positive?
           finarr.push(newarr)
           newarr = []
         end
       end
       ind = 0
-      months.each do |mn|
-        hashyear[mn.to_s] = finarr[ind]
+      months.each do |month|
+        hashyear[month.to_s] = finarr[ind]
         ind += 1
       end
       maxhash, minhash, maxhumidity1 = WeatherMan.new.populatefromhash(hashyear, maxhash, minhash, maxhumidity1)
@@ -53,7 +45,7 @@ class WeatherMan
       WeatherMan.new.lowestyear(arrformin, months)
       WeatherMan.new.humidityyear(arrforhum, months)
       # ###################### Taking input for month to jump onto next portion of task (Part 2,3,4)###################
-      maxtemp, mintemp, humidity = WeatherMan.new.monthinp(path, filename, year)
+      maxtemp, mintemp, humidity = WeatherMan.new.monthinput(path, filename, year)
     end
   end
 
